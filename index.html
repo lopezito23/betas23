@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>Una pregunta importante 💗</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background:
+        linear-gradient(
+          rgba(90, 0, 55, 0.48),
+          rgba(30, 0, 40, 0.68)
+        ),
+        url("https://images.pexels.com/photos/4636525/pexels-photo-4636525.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260");
+
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .heart {
+      position: fixed;
+      pointer-events: none;
+      user-select: none;
+      color: rgba(255, 255, 255, 0.25);
+      z-index: 1;
+    }
+
+    .heart1 {
+      top: 7%;
+      left: 7%;
+      font-size: 46px;
+    }
+
+    .heart2 {
+      top: 17%;
+      right: 9%;
+      font-size: 32px;
+    }
+
+    .heart3 {
+      bottom: 13%;
+      left: 10%;
+      font-size: 36px;
+    }
+
+    .heart4 {
+      bottom: 7%;
+      right: 9%;
+      font-size: 52px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 10;
+
+      width: calc(100% - 30px);
+      max-width: 430px;
+
+      padding: 30px 20px;
+
+      text-align: center;
+      color: white;
+
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 28px;
+
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+
+      font-size: clamp(28px, 8vw, 40px);
+      line-height: 1.1;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      margin: 0 0 28px;
+
+      font-size: 17px;
+      line-height: 1.5;
+
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    /*
+      ESTA ZONA ES LA CLAVE.
+
+      Ocupa únicamente la pantalla disponible.
+      El botón NO nunca sale de este espacio.
+    */
+    .game-area {
+      position: relative;
+
+      width: 100%;
+      height: 120px;
+
+      overflow: visible;
+    }
+
+    .buttons {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+
+      width: max-content;
+
+      transform: translate(-50%, -50%);
+    }
+
+    button {
+      min-width: 105px;
+      min-height: 52px;
+
+      padding: 13px 22px;
+
+      border: 0;
+      border-radius: 999px;
+
+      font-size: 17px;
+      font-weight: 800;
+
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+
+      touch-action: manipulation;
+      outline: none;
+    }
+
+    #yes {
+      background: #ff4f9a;
+      color: white;
+
+      box-shadow:
+        0 8px 25px rgba(255, 79, 154, 0.45);
+    }
+
+    #yes:active {
+      transform: scale(0.96);
+    }
+
+    /*
+      EL BOTÓN NO.
+
+      IMPORTANTE:
+      - Nunca usa position: fixed.
+      - Nunca usa left/top.
+      - Nunca desaparece.
+      - Solo cambia transform.
+    */
+    #no {
+      background: white;
+      color: #e63b7e;
+
+      position: relative;
+
+      z-index: 1000;
+
+      box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.2);
+
+      transform: translate(0, 0);
+
+      /*
+        No hay transición para que salte inmediatamente.
+      */
+      transition: none;
+    }
+
+    #message {
+      display: none;
+    }
+
+    #message h1 {
+      font-size: 34px;
+    }
+
+    .small {
+      margin-top: 15px;
+
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    @media (max-height: 600px) {
+      .card {
+        padding: 22px 18px;
+      }
+
+      .subtitle {
+        margin-bottom: 18px;
+      }
+
+      .game-area {
+        height: 95px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="heart heart1">♡</div>
+  <div class="heart heart2">♥</div>
+  <div class="heart heart3">♡</div>
+  <div class="heart heart4">♥</div>
+
+  <div class="card">
+
+    <!-- PREGUNTA -->
+    <div id="question">
+
+      <h1>¿VUELVO CON MI EX? 💗</h1>
+
+      <p class="subtitle">
+        Necesito tu opinión, amiga... 🥺<br>
+        ¿Tú qué dices?
+      </p>
+
+      <div class="game-area" id="gameArea">
+
+        <div class="buttons" id="buttons">
+
+          <button id="yes">
+            SÍ ♡
+          </button>
+
+          <button id="no">
+            NO ✕
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="small">
+        Tu respuesta es importante para mí 🥹
+      </div>
+
+    </div>
+
+
+    <!-- MENSAJE FINAL -->
+    <div id="message">
+
+      <h1>
+        GRACIAS POR APOYARME 🥹
+      </h1>
+
+      <p class="subtitle">
+        Eres la mejor amiga ❤️
+      </p>
+
+      <p style="
+        font-size:20px;
+        font-weight:800;
+        line-height:1.5;
+        margin:0;
+      ">
+        NO TE CREAS JAJAJAJA 😂<br>
+        LO HICE DE MAME 💀
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <script>
+    const yesButton = document.getElementById("yes");
+    const noButton = document.getElementById("no");
+    const buttons = document.getElementById("buttons");
+    const gameArea = document.getElementById("gameArea");
+
+    const question = document.getElementById("question");
+    const message = document.getElementById("message");
+
+    let noMoved = false;
+
+
+    /*
+      MUEVE EL BOTÓN NO
+
+      El botón NO permanece dentro del game-area.
+      Únicamente cambiamos transform.
+
+      Esto evita completamente:
+      position: fixed
+      left/top
+      viewport
+      visualViewport
+      coordenadas negativas
+      botones desaparecidos
+    */
+    function moveNo() {
+
+      noMoved = true;
+
+      const areaWidth = gameArea.clientWidth;
+      const areaHeight = gameArea.clientHeight;
+
+      const buttonWidth = noButton.offsetWidth;
+      const buttonHeight = noButton.offsetHeight;
+
+      /*
+        Dejamos espacio suficiente para que
+        el botón nunca toque los bordes.
+      */
+      const padding = 8;
+
+      const maxX =
+        Math.max(
+          0,
+          (areaWidth - buttonWidth) / 2 - padding
+        );
+
+      const maxY =
+        Math.max(
+          0,
+          (areaHeight - buttonHeight) / 2 - padding
+        );
+
+      /*
+        Posición aleatoria.
+
+        Al principio el botón está al lado de SÍ.
+
+        Después de tocarlo puede aparecer
+        a cualquier lado dentro del área.
+      */
+      const x =
+        (Math.random() * 2 - 1) * maxX;
+
+      const y =
+        (Math.random() * 2 - 1) * maxY;
+
+      /*
+        SOLO transform.
+
+        El botón jamás abandona el contenedor.
+      */
+      noButton.style.transform =
+        "translate(" +
+        Math.round(x) +
+        "px, " +
+        Math.round(y) +
+        "px)";
+    }
+
+
+    /*
+      TELÉFONO / TABLET
+
+      Se ejecuta exactamente cuando intentas
+      tocar el botón.
+    */
+    noButton.addEventListener(
+      "pointerdown",
+      function(event) {
+
+        if (
+          event.pointerType === "touch" ||
+          event.pointerType === "pen"
+        ) {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          /*
+            requestAnimationFrame evita que
+            el navegador pierda el toque.
+          */
+          requestAnimationFrame(moveNo);
+        }
+      },
+      { passive: false }
+    );
+
+
+    /*
+      PC / MOUSE
+    */
+    noButton.addEventListener(
+      "mousedown",
+      function(event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        moveNo();
+      }
+    );
+
+
+    /*
+      SÍ
+    */
+    yesButton.addEventListener(
+      "click",
+      function() {
+
+        question.style.display = "none";
+        message.style.display = "block";
+      }
+    );
+
+
+    /*
+      Si se gira el teléfono o cambia el tamaño,
+      dejamos el botón dentro del área.
+    */
+    window.addEventListener(
+      "resize",
+      function() {
+
+        if (!noMoved) return;
+
+        /*
+          Lo recolocamos en una posición válida
+          sin hacerlo desaparecer.
+        */
+        moveNo();
+      }
+    );
+  </script>
+
+</body>
+</html>
